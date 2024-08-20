@@ -55,7 +55,6 @@ def contact_submit(name: str, domicile: str, p_domicile: str, dob: str):
             'dob': validate_dob(dob)
              }
     errors = {k: v for k, v in errors.items() if v is not None}
-    # Return Button with error message if they exist
     return Div(id='submit-btn-container')(
         Button(type='submit', id='submit-btn', hx_post='/submit', hx_target='#submit-btn-container', hx_swap='outerHTML')('Submit'),
         *[Div(error, style='color: red;') for error in errors.values()])
@@ -78,8 +77,7 @@ def validate_dob(dob: str):
     if dob == "": return "Empty."
 
 def inputTemplate(label, name, val, errorMsg=None, input_type='text'):
-    # Generic template for replacing the input field and showing the validation message
     return Div(hx_target='this', hx_swap='outerHTML', cls=f"{errorMsg if errorMsg else 'Valid'}")(
-               Label(label), # Creates label for the input field
-               Input(name=name,type=input_type,value=f'{val}',hx_post=f'/{name.lower()}'), # Creates input field
-               Div(f'{errorMsg}', style='color: red;') if errorMsg else None) # Creates red error message below if there is an error
+               Label(label), 
+               Input(name=name,type=input_type,value=f'{val}',hx_post=f'/{name.lower()}'),
+               Div(f'{errorMsg}', style='color: red;') if errorMsg else None)
